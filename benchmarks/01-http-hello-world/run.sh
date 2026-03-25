@@ -39,7 +39,8 @@ start_server() {
 stop_server() {
     kill ${SERVER_PID} 2>/dev/null || true
     wait ${SERVER_PID} 2>/dev/null || true
-    sleep 1
+    kill_on_port ${PORT}
+    sleep 0.5
 }
 
 # Find saturation point: binary search for max sustainable throughput

@@ -24,10 +24,11 @@ PGPASSWORD=bench psql -h localhost -U bench -d bench \
 log_ok "PostgreSQL ready"
 
 WRK_RATE="${WRK_RATE:-5000}"  # safe default for WSL2; set WRK_RATE=50000 on bare metal
+MODE="${MODE:-fixed}"          # "fixed" or "saturate"
 
 log_info ""
 log_info "=== 1/5: HTTP Hello World ==="
-"${PROJECT_ROOT}/benchmarks/01-http-hello-world/run.sh" "${WRK_RATE}"
+"${PROJECT_ROOT}/benchmarks/01-http-hello-world/run.sh" "${WRK_RATE}" "${MODE}"
 
 log_info ""
 log_info "=== 2/5: DB CRUD ==="
@@ -35,7 +36,7 @@ log_info "=== 2/5: DB CRUD ==="
 
 log_info ""
 log_info "=== 3/5: Next.js Serving ==="
-"${PROJECT_ROOT}/benchmarks/03-nextjs-serving/run.sh" "${WRK_RATE}"
+"${PROJECT_ROOT}/benchmarks/03-nextjs-serving/run.sh" "${WRK_RATE}" "${MODE}"
 
 log_info ""
 log_info "=== 4/5: Micro-benchmarks ==="
@@ -43,7 +44,7 @@ log_info "=== 4/5: Micro-benchmarks ==="
 
 log_info ""
 log_info "=== 5/5: Polyglot vs Native ==="
-"${PROJECT_ROOT}/benchmarks/05-polyglot-vs-native/run.sh" "${WRK_RATE}"
+"${PROJECT_ROOT}/benchmarks/05-polyglot-vs-native/run.sh" "${WRK_RATE}" "${MODE}"
 
 log_info ""
 log_info "========================================"

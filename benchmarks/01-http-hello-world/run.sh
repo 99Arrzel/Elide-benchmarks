@@ -66,10 +66,20 @@ find_saturation() {
         # Check if errors or extreme latency (p99 > 100ms means saturated)
         local errors
         errors=$(echo "${output}" | grep -c "Socket errors\|Non-2xx" || true)
-        local p99
-        p99=$(echo "${output}" | grep "99.000%" | awk '{print $2}' | sed 's/[a-z]//g' || echo "0")
+        local p99_raw p99_ms
+        p99_raw=$(echo "${output}" | grep "99.000%" | awk '{print $2}' || echo "0ms")
+        # Normalize to milliseconds — wrk2 reports s/ms/us
+        if [[ "${p99_raw}" == *s ]] && [[ "${p99_raw}" != *ms ]]; then
+            p99_ms=$(echo "${p99_raw}" | sed 's/s//' | awk '{printf "%.2f", $1 * 1000}')
+        elif [[ "${p99_raw}" == *ms ]]; then
+            p99_ms=$(echo "${p99_raw}" | sed 's/ms//')
+        elif [[ "${p99_raw}" == *us ]]; then
+            p99_ms=$(echo "${p99_raw}" | sed 's/us//' | awk '{printf "%.2f", $1 / 1000}')
+        else
+            p99_ms="${p99_raw}"
+        fi
 
-        if [[ ${errors} -gt 0 ]] || (( $(echo "${p99} > 100" | bc -l 2>/dev/null || echo 0) )); then
+        if [[ ${errors} -gt 0 ]] || (( $(echo "${p99_ms} > 100" | bc -l 2>/dev/null || echo 0) )); then
             high=${mid}
         else
             best=${mid}

@@ -1,0 +1,11 @@
+{
+  "name": "db-crud-node",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "pg": "^8.13.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0"
+  }
+}

@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+.bun/
+
+# Next.js
+.next/
+out/
+
+# Results (generated)
+results/*.json
+results/*.csv
+results/*.txt
+!results/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Runtime caches
+.deno/
+.elide/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Kotlin
+*.class
+build/
